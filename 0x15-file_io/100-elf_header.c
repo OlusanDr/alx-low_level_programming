@@ -16,8 +16,7 @@ void print_type(unsigned int e_type, unsigned char *e_ident);
 void print_entry(unsigned long int e_entry, unsigned char *e_ident);
 void close_elf(int elf);
 /**
-* check_elf - Checks if a file is an ELF file.
-
+* check_elf - Check if a file is an ELF file.
 * @e_ident: A pointer to an array containing the ELF magic numbers.
 *
 * Description: If the file is not an ELF file - exit code 98.
@@ -34,6 +33,7 @@ e_ident[index] != 'F')
 {
 dprintf(STDERR_FILENO, "Error: Not an ELF file\n");
 exit(98);
+
 }
 }
 }
@@ -57,7 +57,6 @@ printf(" ");
 
 }
 }
-
 /**
 * print_class - Prints the class of an ELF header.
 * @e_ident: A pointer to an array containing the ELF class.
@@ -70,6 +69,7 @@ switch (e_ident[EI_CLASS])
 case ELFCLASSNONE:
 printf("none\n");
 break;
+
 case ELFCLASS32:
 printf("ELF32\n");
 break;
@@ -99,17 +99,18 @@ case ELFDATA2MSB:
 printf("2's complement, big endian\n");
 break;
 default:
-
 printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 }
 }
 /**
-* print_version - Prints the version of an ELF header.
-* @e_ident: A pointer to an array containing the ELF version.
-*/
+* * print_version - Prints the version of an ELF header.
+* * @e_ident: A pointer to an array containing the ELF version.
+* */
 void print_version(unsigned char *e_ident)
+
 {
 printf(" Version: %d",
+
 e_ident[EI_VERSION]);
 switch (e_ident[EI_VERSION])
 {
@@ -140,12 +141,12 @@ case ELFOSABI_NETBSD:
 printf("UNIX - NetBSD\n");
 break;
 case ELFOSABI_LINUX:
-
 printf("UNIX - Linux\n");
 break;
 case ELFOSABI_SOLARIS:
 printf("UNIX - Solaris\n");
 break;
+
 case ELFOSABI_IRIX:
 printf("UNIX - IRIX\n");
 break;
@@ -221,9 +222,9 @@ e_entry = ((e_entry << 8) & 0xFF00FF00) |
 ((e_entry >> 8) & 0xFF00FF);
 e_entry = (e_entry << 16) | (e_entry >> 16);
 }
+
 if (e_ident[EI_CLASS] == ELFCLASS32)
 printf("%#x\n", (unsigned int)e_entry);
-
 else
 printf("%#lx\n", e_entry);
 
@@ -259,17 +260,23 @@ int main(int __attribute__((__unused__)) argc, char *argv[])
 Elf64_Ehdr *header;
 int o, r;
 o = open(argv[1], O_RDONLY);
+
 if (o == -1)
 {
-dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+dprintf(STDERR_FILENO, "Error: Can't read file %s\n",
+
+argv[1]);
+
 exit(98);
 }
 header = malloc(sizeof(Elf64_Ehdr));
 if (header == NULL)
-
 {
 close_elf(o);
-dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+dprintf(STDERR_FILENO, "Error: Can't read file %s\n",
+
+argv[1]);
+
 exit(98);
 }
 r = read(o, header, sizeof(Elf64_Ehdr));
@@ -277,7 +284,10 @@ if (r == -1)
 {
 free(header);
 close_elf(o);
-dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
+dprintf(STDERR_FILENO, "Error: `%s`: No such file\n",
+
+argv[1]);
+
 exit(98);
 }
 check_elf(header->e_ident);
